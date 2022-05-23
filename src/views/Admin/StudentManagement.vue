@@ -7,6 +7,10 @@
       </div>
       <el-table
           ref="table"
+          v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="
           studentList.filter((data) =>
                 !search ||
@@ -53,7 +57,7 @@
         <el-table-column prop="major" align="center" label="专业" sortable></el-table-column>
 
         <el-table-column fixed="right" align="center" width="200">
-          <template slot="header">
+          <template slot="header" slot-scope="scope">
             <el-input
                 v-model="search"
                 size="mini"
@@ -133,6 +137,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      loading: true,
       studentList: [],
       currentPage: 1,
       pageSize: 5,
@@ -145,6 +150,7 @@ export default {
   mounted() {
     this.$axios.get('/student/list?currentPage=' + this.currentPage + '&pageSize=' + this.pageSize).then(res => {
       this.studentList = res.data.data.records;
+      this.loading = false;
     }).catch(function (error) {
       console.log(error);
     });

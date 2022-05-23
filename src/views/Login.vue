@@ -82,7 +82,7 @@ export default {
         const data = res.data.data
         this.$store.commit("setToken", res.headers["token"]);
         this.$store.commit("setUserInfo", data);
-        this.$router.push('/selectProgress');
+        this.$router.push('/notification');
       }).catch(function (error) {
         console.log(error);
       })

@@ -14,7 +14,7 @@
       <el-menu-item
           index="1"
           v-if="roleId == 1"
-          @click="asideRouter('selectProgress')"
+          @click="asideRouter('/notification')"
       >
         <i class="el-icon-data-analysis"></i>
         <span slot="title">查看进度</span>
@@ -23,7 +23,7 @@
       <el-menu-item
           index="2"
           v-if="roleId == 1"
-          @click="asideRouter('activity')"
+          @click="asideRouter('/activity')"
       >
         <i class="el-icon-timer"></i>
         <span slot="title">活动管理</span>
@@ -44,16 +44,25 @@
       <el-menu-item
           index="4"
           v-if="roleId == 1"
-          @click="asideRouter('matchManagement')"
+          @click="asideRouter('/matchManagement')"
       >
         <i class="el-icon-connection"></i>
         <span slot="title">匹配管理</span>
       </el-menu-item>
 
       <el-menu-item
+          index="5"
+          v-if="roleId == 1"
+          @click="asideRouter('/notice')"
+      >
+        <i class="el-icon-message-solid"></i>
+        <span slot="title">通知管理</span>
+      </el-menu-item>
+
+      <el-menu-item
           index="1"
           v-if="roleId == 2"
-          @click="asideRouter('selectProgress')"
+          @click="asideRouter('/notification')"
       >
         <i class="el-icon-data-analysis"></i>
         <span slot="title">查看进度</span>
@@ -62,7 +71,7 @@
       <el-menu-item
           index="2"
           v-if="roleId == 2"
-          @click="asideRouter('chooseStuent')"
+          @click="asideRouter('/chooseStuent')"
       >
         <i class="el-icon-user"></i>
         <span slot="title">选择学生</span>
@@ -71,7 +80,7 @@
       <el-menu-item
           index="3"
           v-if="roleId == 2"
-          @click="asideRouter('myStudent')"
+          @click="asideRouter('/myStudent')"
       >
         <i class="el-icon-school"></i>
         <span slot="title">我的学生</span>
@@ -80,7 +89,7 @@
       <el-menu-item
           index="4"
           v-if="roleId == 2"
-          @click="asideRouter('tutorInfo')"
+          @click="asideRouter('/tutorInfo')"
       >
         <i class="el-icon-user-solid"></i>
         <span slot="title">个人信息</span>
@@ -89,7 +98,7 @@
       <el-menu-item
           index="1"
           v-if="roleId == 3"
-          @click="asideRouter('selectProgress')"
+          @click="asideRouter('/notification')"
       >
         <i class="el-icon-data-analysis"></i>
         <span slot="title">查看进度</span>
@@ -98,7 +107,7 @@
       <el-menu-item
         index="2"
         v-if="roleId == 3"
-        @click="asideRouter('chooseTutor')"
+        @click="asideRouter('/chooseTutor')"
       >
         <i class="el-icon-edit-outline"></i>
         <span slot="title">选择导师</span>
@@ -107,7 +116,7 @@
       <el-menu-item
         index="3"
         v-if="roleId == 3"
-        @click="asideRouter('myTutor')"
+        @click="asideRouter('/myTutor')"
       >
         <i class="el-icon-office-building"></i>
         <span slot="title">我的导师</span>
@@ -116,7 +125,7 @@
       <el-menu-item
           index="4"
           v-if="roleId == 3"
-          @click="asideRouter('mySpace')"
+          @click="asideRouter('/mySpace')"
       >
         <i class="el-icon-user-solid"></i>
         <span slot="title">个人信息</span>

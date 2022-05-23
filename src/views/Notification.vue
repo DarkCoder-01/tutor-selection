@@ -1,47 +1,56 @@
 <template>
   <div>
-    <!--面包屑-->
-    <el-breadcrumb separator-class="el-icon-arrow-right" class="bread">
-      <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-    </el-breadcrumb>
-    <!--卡片区-->
-    <el-card>
-      <!--通告-->
-      <div class="notice">
+    <div class="left">
+      <el-card>
         <el-table
-          class="noticeTable"
-          :data="tableData1"
-          stripe
-          style="width: 100%"
+            class="noticeTable"
+            :data="noticeList"
+            stripe
+            style="width: 100%"
         >
-          <el-table-column prop="noticeName" label="通知公告">
+          <el-table-column prop="noticeName" label="通知公告" width="700px">
             <template slot-scope="scope">
-              <a href="/welcome" target="_self" class="buttonText">{{
-                scope.row.noticeName
-              }}</a>
+              <a :href="'/notification/'+scope.row.id" target="_self">{{ scope.row.title  }}</a>
             </template>
           </el-table-column>
-          <el-table-column prop="" width="100"> </el-table-column>
-          <el-table-column prop="noticeTime" width="100">
+          <el-table-column prop="createTime">
             <template slot="header" class="moreClick">
-              <div @click="moreClick" style="cursor: pointer">More>></div>
+              <div @click="moreClick" style="cursor: pointer">More >></div>
             </template>
           </el-table-column>
           <template slot="empty">
             <el-empty description="暂无公告"></el-empty>
           </template>
         </el-table>
+      </el-card>
+    </div>
+    <div class="right">
+      <div class="selectProgress">
+        <el-card>
+          <el-timeline>
+            <el-timeline-item
+                :size = "item.size"
+                :timestamp="item.startTime"
+                placement="top"
+                v-for="(item, index) in activityList"
+                :key="index"
+                :color="item.color"
+                :icon="item.icon"
+            >
+              {{ item.typeName }}
+            </el-timeline-item>
+          </el-timeline>
+
+          <el-empty v-show="activityList.length <= 0" description="暂无活动"></el-empty>
+        </el-card>
       </div>
-      <!--日历-->
-      <el-calendar>
-        <template slot="dateCell" slot-scope="{ data }">
-          <p :class="data.isSelected ? 'is-selected' : ''">
-            {{ data.day.split("-").slice(1)[1] }}
-            {{ data.isSelected ? "✔️" : "" }}
-          </p>
-        </template>
-      </el-calendar>
-    </el-card>
+      <div class="calendar_content">
+        <el-card>
+          <el-calendar v-model="nowDate">
+          </el-calendar>
+        </el-card>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,88 +59,92 @@ export default {
   components: {},
   data() {
     return {
-      tableData1: [
-        {
-          noticeName:
-            "通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1通知1",
-          noticeTime: "2021-7-16",
-        },
-        {
-          noticeName: "通知2",
-          noticeTime: "2021-7-10",
-        },
-        {
-          noticeName: "通知3",
-          noticeTime: "2021-7-5",
-        },
-        {
-          noticeName: "通知1",
-          noticeTime: "2021-7-16",
-        },
-        {
-          noticeName: "通知2",
-          noticeTime: "2021-7-10",
-        },
-        {
-          noticeName: "通知3",
-          noticeTime: "2021-7-5",
-        },
-        {
-          noticeName: "通知1",
-          noticeTime: "2021-7-16",
-        },
-        {
-          noticeName: "通知2",
-          noticeTime: "2021-7-10",
-        },
-        {
-          noticeName: "通知3",
-          noticeTime: "2021-7-5",
-        },
-      ],
+      noticeList: [],
+      activityList: [],
+      nowDate: new Date()
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.$axios.get('/notice/list').then(res => {
+      this.noticeList = res.data.data;
+      console.log(this.noticeList);
+    }).catch(function (error) {
+      console.log(error);
+    });
+    this.$axios.get('/activity/list').then(res => {
+      this.activityList = res.data.data;
+      console.log(this.activityList);
+      var now = new Date().getTime();
+      console.log(now);
+      var flag = false;
+      this.activityList.forEach((item) => {
+        var typeName;
+        switch (item.type) {
+          case 1: typeName = "信息确认"; break;
+          case 2: typeName = "第一轮学生选导师"; break;
+          case 3: typeName = "第一轮导师选学生"; break;
+          case 4: typeName = "第二轮学生选导师"; break;
+          case 5: typeName = "第二轮导师选学生"; break;
+          case 6: typeName = "协调阶段"; break;
+        }
+        item.size = "normal"
+        if(!item.enable && !flag) {
+          item.icon = 'el-icon-circle-check';
+        }
+        if(item.enable) {
+          flag = true;
+          item.icon = 'el-icon-s-flag';
+          item.size = "large";
+        }
+        item.typeName = typeName;
+        item.color = '#3498db';
+      })
+    }).catch(function (error) {
+      console.log(error);
+    })
+  },
   methods: {
     moreClick() {},
+    asideRouter(ways) {
+      this.$router.push({
+        path: ways,
+      });
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
-.notice {
+.left {
+  width: 74%;
+  height: 500px;
   float: left;
-  width: 45%;
-  height: 330px;
-  overflow: hidden;
+  margin-bottom: 20px;
+
 }
-a {
-  display: inline-block;
-  width: 100%;
-  color: #4b6584;
-  text-decoration: none;
-  font-weight: bold;
+
+.right {
+  width: 25%;
+  //border: 2px solid black;
+  float: right;
+  margin-bottom: 20px;
 }
-.is-selected {
-  color: #1989fa;
+
+.calendar_content {
+  margin-top: 15px;
 }
 </style>
+
 <style>
-.el-calendar {
-  float: right;
-  font-weight: bold;
-}
-.el-calendar /deep/ .el-calendar-table thead th {
-  font-weight: bold;
-}
-.el-calendar__body {
-  width: 600px;
-  height: 20%;
+.el-calendar__button-group {
+  display: none;
 }
 .el-calendar-table .el-calendar-day {
-  height: 60px;
+  height: 30px;
 }
-</style>
-<style lang="scss">
+.el-card {
+  margin: 0;
+  padding: 0;
+}
 </style>

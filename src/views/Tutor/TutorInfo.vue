@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-card class="space_content">
       <div class="space_title">导师个人信息</div>
       <div class="space_form">

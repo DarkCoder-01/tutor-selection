@@ -222,9 +222,6 @@ export default {
   margin: 20px auto;
   width: 400px;
 }
-.btn_group {
-  margin: 0 auto;
-}
 </style>
 <style lang="scss">
 </style>

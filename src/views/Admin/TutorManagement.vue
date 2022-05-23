@@ -7,6 +7,10 @@
       </div>
       <el-table
           ref="table"
+          v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
           :data="
           tutorList
             .filter(
@@ -163,6 +167,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      loading: true,
       tutorList: [],
       currentPage: 1,
       pageSize: 5,
@@ -175,6 +180,7 @@ export default {
   mounted() {
     this.$axios.get('/tutorList?currentPage=' + this.currentPage + '&pageSize=' + this.pageSize).then(res => {
       this.tutorList = res.data.data.records;
+      this.loading = false;
     }).catch(function (error) {
       console.log(error);
     });

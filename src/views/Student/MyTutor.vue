@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card v-for="(item, index) in tutorList">
+    <el-card>
       <el-descriptions class="margin-top" title="我的导师" :column="2" border>
         <template slot="extra">
           <el-button type="text" class="el-icon-connection">已双向绑定</el-button>
@@ -10,21 +10,21 @@
             <i class="el-icon-info"></i>
             导师号
           </template>
-          {{ item.tutorId }}
+          {{ myTutor.tutorId }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-user"></i>
             姓名
           </template>
-          {{ item.name }}
+          {{ myTutor.name }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-medal"></i>
             职称
           </template>
-          {{ item.title }}
+          {{ myTutor.title }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
@@ -32,7 +32,7 @@
             研究方向
           </template>
           <el-tag size="small">
-            {{ item.researchDirection }}
+            {{ myTutor.researchDirection }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item>
@@ -40,40 +40,40 @@
             <i class="el-icon-office-building"></i>
             办公室
           </template>
-          {{ item.office }}
+          {{ myTutor.office }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-mobile-phone"></i>
             联系方式
           </template>
-          {{ item.phone }}
+          {{ myTutor.phone }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-paperclip"></i>
             邮箱
           </template>
-          {{ item.mail }}
+          {{ myTutor.mail }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-s-comment"></i>
             个人简介
           </template>
-          {{ item.personalDescription }}
+          {{ myTutor.personalDescription }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-collection-tag"></i>
             研究成果
           </template>
-          {{ item.researchResult }}
+          {{ myTutor.researchResult }}
         </el-descriptions-item>
       </el-descriptions>
     </el-card>
 
-    <el-card v-show="tutorList.length == 0" style="min-height: 70vh">
+    <el-card v-show="myTutor == null" style="min-height: 70vh">
       <el-result icon="info" title="信息提示" subTitle="没有匹配导师" style="margin-top: 70px">
       </el-result>
     </el-card>
@@ -84,7 +84,7 @@
 export default {
   data() {
     return {
-      tutorList: [],
+      myTutor: null,
     };
   },
   methods: {
@@ -92,9 +92,7 @@ export default {
   },
   mounted: function() {
     this.$axios.get('/myTutor?studentId=' + this.$store.state.userInfo.username).then(res => {
-      if(res.data.data.length > 0) {
-        this.tutorList = res.data.data;
-      }
+      this.myTutor = res.data.data;
     });
   },
 };

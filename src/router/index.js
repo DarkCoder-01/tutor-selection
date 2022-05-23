@@ -13,10 +13,13 @@ VueRouter.prototype.push = function push(location) {
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/login',
+    meta:{
+      title: '导师双选系统'
+    }
   },
   {
-    path: '/home',
+    path: '',
     component: () => import('../views/Home.vue'),
     children: [
       {
@@ -24,8 +27,18 @@ const routes = [
         component: () => import('../views/Student/ChooseTutor'),
       },
       {
-        path: '/selectProgress',
-        component: () => import('../views/SelectProgress.vue'),
+        path: '/notification',
+        component: () => import('../views/NotificationNavagation'),
+        children: [
+          {
+            path: '',
+            component: () => import('../views/Notification'),
+          },
+          {
+            path: ':id',
+            component: () => import('../views/NoticeDetail'),
+          },
+        ]
       },
       {
         path: '/chooseStuent',
@@ -66,6 +79,10 @@ const routes = [
       {
         path: '/matchManagement',
         component: () => import('../views/Admin/MatchManagement'),
+      },
+      {
+        path: '/notice',
+        component: () => import('../views/Admin/NoticeManage'),
       },
     ]
   },
